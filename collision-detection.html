@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collision Detection</title>
+    <style>
+        html,body{
+            min-width: 100%;
+            min-height: 100%;
+            overflow: hidden;
+            top: 0vh;
+            left: 0vw;
+            background-image: url('road.jpg');
+            animation: slide2 infinite linear 1s;
+        }
+
+        @keyframes slide2{
+            0%{background-position: 480px 0;}
+            100%{background-position:0 0;}
+        }
+
+
+
+        #container {
+            width: 80px;
+            height: 40px;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: url(Car.png);
+            background-size: cover;
+            background-repeat:no-repeat;
+            background-position:center;
+        }
+        @keyframes slide {
+            0%{left: 2000px;}
+            100%{left: -80px;}
+        }
+        #scorecard{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: 0px;
+            right: 0px;
+            padding:20px;
+            background: rgba(0, 0, 0, .7);
+            color: white;
+            border: solid 2px black;
+        }
+        #score, h2{
+            display: inline-block;
+            margin: 0px;
+            font-size: 32px;
+        }
+        #again{
+            visibility: hidden;
+            position: absolute;
+            left: 50%;
+            top: 0px;
+            color: white;
+            padding: 20px;
+            background: rgba(0, 0, 0, .7);
+            transform: translate(-50%, 0%);
+        }
+        #start{
+            visibility: hidden;
+            position: absolute;
+            left: 50%;
+            top: 0px;
+            color: white;
+            padding: 20px;
+            background: rgba(0, 0, 0, .7);
+            transform: translate(-50%, 0%);
+            text-align: center;
+            width: 300px;
+        }
+        #intro{
+            visibility: visible;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            color: white;
+            font-size: 32px;
+            padding: 20px;
+            background: rgba(0, 0, 0, .7);
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+            display:flex;
+            align-items: center;
+            justify-content:center;
+            flex-direction:column;
+            text-align: center;
+        }
+        #button {
+            margin: 20px;
+            color: black;
+            font-size: 24px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.7);
+        }
+    </style>
+</head>
+<body>
+    <div id="scorecard">
+        <h2>Score: &nbsp;</h2><h1 id="score">0</h1>
+    </div>
+
+    <button id="start" onclick="refreshPage();">Click here to play again.</button>
+
+    <div id="container"></div>
+    <div id="container2"></div>
+
+    <div id="intro">
+        Use the arrow keys to navigate through the cones. <br>
+        <button id="button">Start</button>
+    </div>
+
+    <script>
+        var listen = document.getElementById("button").addEventListener("click", () =>{
+            document.getElementById("intro").style.visibility = "hidden";
+
+        const objectMove = document.getElementById("container");
+        let object = document.getElementById("container");
+
+
+
+            
+
+        let moveRight = 20;
+        let moveUp = 20;
+
+            document.addEventListener("keydown", (e) =>{
+
+                    //Move Right
+                    if(event.keyCode == 39 && (object.offsetLeft + object.offsetWidth) < 300) {
+                        moveRight = moveRight + 10;
+                        objectMove.style.left = moveRight + "px";
+                    }
+                    //Move Left
+                    else if(event.keyCode == 37 && object.offsetLeft > 0) {
+                        moveRight = moveRight - 10;
+                        objectMove.style.left = moveRight + "px";                    
+                    }
+                    //Move Up
+                    else if(event.keyCode == 38 && object.offsetTop > 0) {
+                        moveUp = moveUp - 10;
+                        objectMove.style.top = moveUp + "px";                    
+                    }
+                    //Move Down
+                    else if(event.keyCode == 40 && object.offsetTop < 630) {
+                        moveUp = moveUp + 10;
+                        objectMove.style.top = moveUp + "px";                    
+                    }
+            });
+
+
+
+let score = 0;
+        
+        
+                     var interval = setInterval(function(){
+                        score++;
+                        document.getElementById("score").innerHTML = score;  
+                    }, 1000);    
+
+        function stop(){
+            clearInterval(interval);
+        }
+
+
+            setInterval(function(){
+                setInterval(function(){
+
+                    var ow = object.offsetWidth;
+                    var oh = object.offsetHeight;
+                    var ot = object.offsetTop;
+                    var ol = object.offsetLeft;
+                    var o2w = object2.offsetWidth;
+                    var o2h = object2.offsetHeight;
+                    var o2t = object2.offsetTop;
+                    var o2l = object2.offsetLeft;
+
+                    if ((ol + ow) > (o2l) &&
+                    (ol) < (o2w + o2l) &&
+                    (ot) < (o2t + o2h) &&
+                    (ot+ oh) > (o2t)){
+                        object.remove();
+                        stop();
+
+                        document.getElementById("scorecard").style.left = '50%';
+                        document.getElementById("scorecard").style.top = '50%';
+                        document.getElementById("scorecard").style.transform = 'translate(-50%,-50%)';
+                        document.getElementById("start").style.visibility = 'visible';
+                    }
+   
+
+                }, 1);
+
+
+
+            var object2 = document.createElement("div");
+            object2.style.position = "absolute";
+            object2.style.width = "50px";
+            object2.style.height = "50px";
+            object2.style.background = "url('https://www.free-emoticons.com/files/objects-emoticons/12383.png')";
+            object2.style.backgroundSize = "70px 70px";
+            object2.style.backgroundPosition = "center";
+            object2.style.animation = "slide linear 2s";
+            object2.style.left = "2000px";
+
+            var number = Math.floor((Math.random() * 630) + 1);
+            object2.style.top = number + "px";
+
+            document.body.appendChild(object2);
+            
+                
+            
+        },500);
+
+
+        });
+
+        function refreshPage(){
+            window.location.reload();
+        }
+
+</script>
+
+</body>
+</html>
