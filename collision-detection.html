@@ -101,6 +101,17 @@
             padding: 20px;
             background: rgba(255, 255, 255, 0.7);
         }
+        #name {
+            margin: 0px;
+            color: white;
+            font-size: 12px;
+            padding: 8px;
+            background: rgba(0, 0, 0, 0.7);
+            position: absolute;
+            bottom: 0px;
+            left: 50%;
+            transform: translate(-50%,-50%);
+        }
     </style>
 </head>
 <body>
@@ -117,6 +128,8 @@
         Use the arrow keys to navigate through the cones. <br>
         <button id="button">Start</button>
     </div>
+
+        <h3 id="name">Created By: Michael Parenti</h3>
 
     <script>
         var listen = document.getElementById("button").addEventListener("click", () =>{
